@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programacion Web BackEnd</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+
+  <h1>Temas de la Asignatura 📚</h1>
+
+  <form id="Form" class="buttons">
+    <button type="button" data-type="1">1️⃣</button>
+    <button type="button" data-type="2">2️⃣</button>
+    <button type="button" data-type="3">3️⃣</button>
+    <button type="button" data-type="4">4️⃣</button>
+    <button type="button" data-type="5">5️⃣</button>
+  </form>
+  <div id="Container"></div>
+  <script>
+    document.querySelectorAll("#Form button").forEach(button => {
+      button.addEventListener("click", async (event) => {
+        const idTema = event.target.getAttribute("data-type");
+        const response = await fetch(`/tema/${idTema}`);
+        const tema = await response.json();
+
+        const contenedor = document.getElementById("Container");
+        
+        if (tema.error) {
+          contenedor.innerHTML = "<h2>Tema no encontrado</h2>"; 
+        } else {
+          contenedor.innerHTML = `
+              <h2>${tema.ID} - ${tema.Nombre}</h2> 
+              <h3>Descripción:</h3>
+              <h4>${tema.Descripcion}</h4>
+              <h3>Palabras clave:</h3>
+              <h4>${tema.Palabras_claves.join(", ")}</h4>
+              <h3>Prácticas:</h3>
+              <ul id="practicasLista">
+                ${tema.Practicas.map(p => `
+                  <li><strong>${p.Titulo}</strong></li>
+                  <li>Descripción: ${p.Descripcion}</li>
+                  <li>Objetivo: ${p.Objetivo}</li>
+                `).join("")}
+              </ul>`;
+        }
+      });
+    });
+</script>
+
+</body>
+
+</html>
