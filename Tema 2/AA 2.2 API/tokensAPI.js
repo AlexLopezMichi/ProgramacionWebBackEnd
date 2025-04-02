@@ -13,7 +13,7 @@ const credentials = {
     returnSecureToken: true           // Indicamos que queremos un token
 };
 
-async function loginFirebase() {
+const loginFirebase = async () => {
     try {
         const response = await axios.post(API_URL, credentials);
         console.log('✅ Token obtenido:', response.data.idToken);
@@ -26,7 +26,7 @@ async function loginFirebase() {
 // URL de verificación del token
 const URL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${API_KEY}`;
 
-async function getUserDataFromToken(token) {
+const getUserDataFromToken = async (token) => {
     try {
         const response = await axios.post(URL, {
             idToken: token  // Enviamos el token JWT para obtener la información
